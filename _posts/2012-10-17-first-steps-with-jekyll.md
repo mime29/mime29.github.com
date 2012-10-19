@@ -9,13 +9,13 @@ tags: []
 
 # Jekyll First Steps
 
-## INSTALL
+## Install
 
 Installing Jekyll is very simple:
 
 * gem install jekyll
 
-## BOOTSTRAP
+## Bootstrap
 
 * git clone https://github.com/plusjade/jekyll-bootstrap.git USERNAME.github.com
 * cd USERNAME.github.com
@@ -25,12 +25,12 @@ Installing Jekyll is very simple:
 *Install your public key to github:*
 https://help.github.com/articles/error-permission-denied-publickey
 
-## ADD CONTENT
+## Add content
 
 * rake page name="about.md"
 * rake post title="Hello World"
 
-## PUBLISH
+## Publish
 
 * git add .
 * git commit -m "Add new content"

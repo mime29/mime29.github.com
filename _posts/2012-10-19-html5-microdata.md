@@ -18,6 +18,7 @@ According to these references, microdata will improve many things:
 ### Improvements through microdata
 
 _Microdata can give the search-engine spiders more context for the type of information on a website and the way the site should be indexed and ranked._
+
 _Another benefit of microdata is the creation of "rich snippets," which display more information on the search result pages than traditional listings._
 
 ### Microdata sample
