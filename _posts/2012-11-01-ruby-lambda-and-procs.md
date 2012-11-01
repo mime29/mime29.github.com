@@ -19,19 +19,25 @@ Website http://rubybits2.codeschool.com/levels/1
 
 Ruby is about blocks.
 We an store blocks into Proc
-p = Proc.new { puts "tweet" }
-p.call
+
+    p = Proc.new { puts "tweet" }
+    p.call
 
 Create an error proc:
-error = -> { raise "Auth Error" }
+
+    error = -> { raise "Auth Error" }
 
 Can store blocks into lambda
-l = lambda {puts "tweet"}
+
+    l = lambda {puts "tweet"}
 
 staby lambdas ruby 1.9:
-l = { puts "tweets" }
+
+    l = { puts "tweets" }
 
 To turn a proc to a block:
-tweets.each(&printer)
+
+    tweets.each(&printer)
+
 But we can also turn blocks to procs using again the & sign
 
