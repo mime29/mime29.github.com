@@ -20,6 +20,7 @@ After adding the gem to your Gemfile
 	gem 'devise'
   bundle
 
+
 Execute the following command to install devise to your rails app
 
 	rails generate devise:install
@@ -53,6 +54,7 @@ Execute the following command to install devise to your rails app
 
 	     On config/application.rb forcing your application to not access the DB
 	     or load models when precompiling your assets.
+
 
 Generate models
 
@@ -91,6 +93,7 @@ Generate the views
         create    app/views/users/mailer/reset_password_instructions.html.erb
         create    app/views/users/mailer/unlock_instructions.html.erb
 
+
 We want a hasAndBelongsToMany (HABTM) Role Authorization model
 We start by creating a role table
 
@@ -116,7 +119,9 @@ Then before the rake db:migrate we modify some files
       end
   end
 
-  And your models look like this:
+
+And your models look like this:
+
 
   # User Model
   class User < ActiveRecord::Base
@@ -136,10 +141,12 @@ Then we need to add a method to check the roles in our User model
     return !!self.roles.find_by_name(role.to_s.camelize)
   end
 
+
 Insert some default roles
 
   Role.create(:name => 'Admin')
   Role.create(:name => 'Owner')
+
 
 Execute the command
 
@@ -156,6 +163,7 @@ Add the gem to your Gemfile
   gem "cancan"
   bundle
 
+
 Then execute the command to generate the Ability file
 
   rails g cancan:ability
@@ -163,6 +171,7 @@ Then execute the command to generate the Ability file
 
 
 Finally define de authorizations per role in the ability.rb file
+
 
   class Ability
     include CanCan::Ability
@@ -176,6 +185,7 @@ Finally define de authorizations per role in the ability.rb file
           end
     end
   end
+
 
 Locking down all pages can also be a solution
 Just put the following line into your ApplicationController
