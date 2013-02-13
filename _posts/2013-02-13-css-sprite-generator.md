@@ -10,7 +10,7 @@ tags: []
 
 ## COMPASS
 
-Their website : [Compass]("http://compass-style.org/help/tutorials/spriting/")
+Their website : [Compass](http://compass-style.org/help/tutorials/spriting/)
 
 ### Why Sprites for Web apps?
 
@@ -23,7 +23,7 @@ Simply because you need your website to be fast to load. It means 2 things:
 
 Because it's not framework dependent, easy to use and SASS Compliant.
 
-* [SCSS]("http://en.wikipedia.org/wiki/Sass_(stylesheet_language)") could be better but is not implemented yet.
+* [SCSS](http://en.wikipedia.org/wiki/Sass_(stylesheet_language)) could be better but is not implemented yet.
 * It has a watcher which can convert on the fly your scss when there is a change.
 
 ### Compare SASS and LESS
