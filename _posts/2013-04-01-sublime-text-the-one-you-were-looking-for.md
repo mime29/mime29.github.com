@@ -162,7 +162,7 @@ Just remove the disable package vintage in sublime config file and have fun !
 ## Generic shortcuts
 
 You can see the list off all shortcuts right here:
-<http://docs.sublimetext.info/en/latest/reference/keyboard_shortcuts_win.html>
+[Sublime Text documentation](http://docs.sublimetext.info/en/latest/reference/keyboard_shortcuts_win.html)
 
 
 
