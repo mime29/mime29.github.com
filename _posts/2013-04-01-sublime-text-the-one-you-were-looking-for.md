@@ -3,7 +3,7 @@ layout: post
 title: "Sublime Text, the one you were looking for"
 description: ""
 category: 
-tags: []
+tags: [Sublime text, editor, HTML, CSS, Web]
 ---
 {% include JB/setup %}
 
@@ -72,16 +72,16 @@ Jump to anything: You can use fuzzy search
 
     CMD+P
 
-If you want to edit a specific style in a specific css file
+Edit a specific style in a specific css file
 
     ‘style.css@symbolname   ‘
 
-If you want to access the symbols add ‘@’ before typing the symbol
-To do the same thing:You can use directly
+Access the symbols, add ‘@’ before typing the symbol
+To do the same thing: you can use directly
 
     CMD+R
 
-You can also reach specific words within a file
+Reach specific words within a file
 
     ‘style.css#word‘
 
@@ -99,19 +99,19 @@ Advanced New File:
 **Package Control** :  Help you to manage any sublime text package!
 _If you need to install a package not yet available from Package Control, just git clone the package into your package folder_
 
-* **Advanced new file** : Automatically create subfolders when creating a new file
-* **Zen Coding** :  Write HTML super quickly! “ul>li*4>a[href=#]{My link text}+.main+.footer” (Has been/Deprecated)
-* **Emmett** : Future of Zen Coding - css quick generation - lorem210 TAB
-* **Nettuts** : package or file auto-download management for projects requirements
-* **Sidebar enhancements** : Improved projects right click options.”Open in browser”-> Can add a url attribute in the subl project file
-* **Prefixr** :  Auto write multi browser compatible css
-* **Xiki** : Navigate in your file system through Xiki Buffer
-* **Sublime Linter** : Syntax check for python, java, php. Can deactivate with Disable Lint command
-* **Gist** : Store Snippets in Github - need to setup your github credential in the plugin folder
-* **DocBlockr** : Add smart comments in the code
-* **PlainTasks** : Create tasks list
-* **Http requester** : Send a HTTP request based on the selection
-* **Live Reload** : Auto reload your web browser when hitting save
+* Advanced new file : Automatically create subfolders when creating a new file
+* Zen Coding :  Write HTML super quickly! “ul>li*4>a[href=#]{My link text}+.main+.footer” (Has been/Deprecated)
+* Emmett : Future of Zen Coding - css quick generation - lorem210 TAB
+* Nettuts : package or file auto-download management for projects requirements
+* Sidebar enhancements : Improved projects right click options.”Open in browser”-> Can add a url attribute in the subl project file
+* Prefixr :  Auto write multi browser compatible css
+* Xiki : Navigate in your file system through Xiki Buffer
+* Sublime Linter : Syntax check for python, java, php. Can deactivate with Disable Lint command
+* Gist : Store Snippets in Github - need to setup your github credential in the plugin folder
+* DocBlockr : Add smart comments in the code
+* PlainTasks : Create tasks list
+* Http requester : Send a HTTP request based on the selection
+* Live Reload : Auto reload your web browser when hitting save
 
 
 ## Snippets
@@ -135,6 +135,7 @@ If you want to replace the first letter of many html h2 headers, you can do:
     CMD+I
 
 type in : 
+
     <h2>.+</h2> and press ALT+ENTER
 
 it select all occurrence, problem is, you select also the 'h2', not only the text
@@ -161,7 +162,7 @@ Just remove the disable package vintage in sublime config file and have fun !
 ## Generic shortcuts
 
 You can see the list off all shortcuts right here:
-http://docs.sublimetext.info/en/latest/reference/keyboard_shortcuts_win.html
+<http://docs.sublimetext.info/en/latest/reference/keyboard_shortcuts_win.html>
 
 
 
