@@ -100,7 +100,7 @@ Advanced New File:
 _If you need to install a package not yet available from Package Control, just git clone the package into your package folder_
 
 * Advanced new file : Automatically create subfolders when creating a new file
-* Zen Coding :  Write HTML super quickly! “ul>li*4>a[href=#]{My link text}+.main+.footer” (Has been/Deprecated)
+* Zen Coding :  Write HTML super quickly! `“ul>li*4>a[href=#]{My link text}+.main+.footer”` (Has been/Deprecated)
 * Emmett : Future of Zen Coding - css quick generation - lorem210 TAB
 * Nettuts : package or file auto-download management for projects requirements
 * Sidebar enhancements : Improved projects right click options.”Open in browser”-> Can add a url attribute in the subl project file
