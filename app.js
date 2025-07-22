@@ -337,38 +337,16 @@ async function loadStaticGalleryData() {
             }
             
             if (staticData.images && staticData.images.length > 0) {
-                // For GitHub Pages, we need to load images from the images/ directory
-                // Since we can't list directory contents, we'll work with the data file
-                galleryData.images = await Promise.all(
-                    staticData.images.map(async (imgData) => {
-                        try {
-                            // Try to load the image file using the processed filename
-                            const imagePath = `./images/${imgData.filename}`;
-                            const imgResponse = await fetch(imagePath);
-                            
-                            if (imgResponse.ok) {
-                                const blob = await imgResponse.blob();
-                                const dataUrl = await blobToDataURL(blob);
-                                
-                                return {
-                                    id: imgData.id,
-                                    src: dataUrl,
-                                    title: imgData.title,
-                                    filename: imgData.originalFilename || imgData.filename
-                                };
-                            } else {
-                                console.warn(`⚠️ Could not load image: ${imagePath}`);
-                                return null;
-                            }
-                        } catch (error) {
-                            console.warn(`⚠️ Error loading image ${imgData.filename}:`, error);
-                            return null;
-                        }
-                    })
-                );
-                
-                // Filter out failed image loads
-                galleryData.images = galleryData.images.filter(img => img !== null);
+                // For GitHub Pages, use direct image URLs instead of converting to data URLs
+                galleryData.images = staticData.images.map(imgData => {
+                    const imagePath = `./images/${imgData.filename}`;
+                    return {
+                        id: imgData.id,
+                        src: imagePath,
+                        title: imgData.title,
+                        filename: imgData.originalFilename || imgData.filename
+                    };
+                });
             }
             
             // Update UI
@@ -384,15 +362,6 @@ async function loadStaticGalleryData() {
     }
 }
 
-// Helper function to convert blob to data URL
-function blobToDataURL(blob) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
-}
 
 // Remove image from gallery
 function removeImage(imageId) {
