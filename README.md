@@ -1,42 +1,41 @@
-# Jekyll-Bootstrap
+# Curated Photo Gallery
 
-The quickest way to start and publish your Jekyll powered blog. 100% compatible with GitHub pages
+A responsive photo gallery website built with lightGallery that supports local editing and GitHub Pages deployment.
 
-## Usage
+## Features
 
-For all usage and documentation please see: <http://jekyllbootstrap.com>
+- **Responsive Design**: Works on all devices
+- **Local Editing**: Add/remove photos and edit titles when running locally
+- **Read-only on GitHub Pages**: Admin controls are hidden in production
+- **Export/Import**: Save and restore your gallery data
+- **Clean Interface**: Modern, minimal design
 
-## Version
+## Local Development
 
-0.2.13 - stable and versioned using [semantic versioning](http://semver.org/).
+1. Open `index.html` in a web browser
+2. Use the admin controls to:
+   - Change the page title
+   - Add images (drag & drop or select files)
+   - Edit image titles
+   - Remove images
+   - Export/import gallery data
 
-## Contributing 
+## GitHub Pages Deployment
 
-This repository tracks 2 projects:
+1. Create a new repository on GitHub
+2. Upload all files to the repository
+3. Go to Settings > Pages
+4. Select "Deploy from a branch" and choose "main"
+5. Your gallery will be available at `https://username.github.io/repository-name`
 
-- **Jekyll-Bootstrap Framework.**  
-  The framework for which users should clone and build their blog on top of is available in the master branch.
-  
-  To contribute to the framework please make sure to checkout your branch based on `jb-development`!!
-  This is very important as it allows me to accept your pull request without having to publish a public version release.
-  
-  Small, atomic Features, bugs, etc.   
-  Use the `jb-development` branch but note it will likely change fast as pull requests are accepted.   
-  Please rebase as often as possible when working.   
-  Work on small, atomic features/bugs to avoid upstream commits affecting/breaking your development work.
-  
-  For Big Features or major API extensions/edits:   
-  This is the one case where I'll accept pull-requests based off the master branch.
-  This allows you to work in isolation but it means I'll have to manually merge your work into the next public release.
-  Translation : it might take a bit longer so please be patient! (but sincerely thank you).
- 
-- **Jekyll-Bootstrap Documentation Website.**    
-  The documentation website at <http://jekyllbootstrap.com> is maintained in the gh-pages branch.
-  Please fork and contribute documentation additions to this branch only.
+## File Structure
 
-The master and gh-pages branch do not share the same ancestry. Please treat them as completely separate git repositories!
+- `index.html` - Main HTML file
+- `app.js` - JavaScript functionality
+- `README.md` - This file
 
+## Data Storage
 
-## License
-
-[Creative Commons](http://creativecommons.org/licenses/by-nc-sa/3.0/)
+- Local development uses `localStorage` to persist data
+- For GitHub Pages, you'll need to commit your data as part of the repository
+- Use export/import functionality to transfer data between environments

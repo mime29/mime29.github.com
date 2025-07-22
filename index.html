@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Curated Photo Gallery</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/css/lightgallery.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/css/lg-zoom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/css/lg-thumbnail.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #333;
+        }
+        .admin-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .admin-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .admin-controls input, .admin-controls button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .admin-controls button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        .admin-controls button:hover {
+            background: #0056b3;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .gallery-item:hover {
+            transform: translateY(-2px);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .image-controls {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: none;
+            gap: 5px;
+        }
+        .gallery-item:hover .image-controls {
+            display: flex;
+        }
+        .image-controls button {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 3px;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .image-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+            padding: 20px 10px 30px;
+            font-size: 14px;
+            text-align: center;
+            cursor: text;
+            outline: none;
+            border: 2px solid transparent;
+            border-radius: 0 0 8px 8px;
+            transition: all 0.2s ease;
+        }
+        .image-title:hover {
+            border-color: rgba(255,255,255,0.3);
+        }
+        .image-title:focus {
+            border-color: #007bff;
+            background: linear-gradient(transparent, rgba(0,123,255,0.8));
+        }
+        .image-size {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            color: rgba(255,255,255,0.8);
+            font-size: 11px;
+            text-align: center;
+        }
+        .gallery-item.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+        .gallery-item.drag-over {
+            border: 2px dashed #007bff;
+            transform: scale(1.05);
+        }
+        .hidden {
+            display: none;
+        }
+        .drop-zone {
+            border: 2px dashed #007bff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin: 10px 0;
+            min-width: 300px;
+        }
+        .drop-zone:hover {
+            border-color: #0056b3;
+            background: #e9ecef;
+        }
+        .drop-zone.drag-over {
+            border-color: #28a745;
+            background: #d4edda;
+            transform: scale(1.02);
+        }
+        .drop-zone-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .drop-icon {
+            font-size: 24px;
+            opacity: 0.7;
+        }
+        .drop-text {
+            color: #666;
+            font-size: 14px;
+        }
+        .choose-files-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .choose-files-btn:hover {
+            background: #0056b3;
+        }
+        .download-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .download-btn:hover {
+            background: #218838;
+        }
+        .title-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .title-controls input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .update-title-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .editable-title {
+            cursor: text;
+            outline: none;
+            border: 2px solid transparent;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .editable-title:hover {
+            border-color: #e9ecef;
+            background: rgba(0,0,0,0.02);
+        }
+        .editable-title:focus {
+            border-color: #007bff;
+            background: rgba(0,123,255,0.05);
+        }
+        .editable-title:empty:before {
+            content: attr(data-placeholder);
+            color: #999;
+        }
+        #image-input {
+            display: none;
+        }
+        .compression-status {
+            color: #666;
+            font-size: 12px;
+            margin: 5px 0;
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 id="page-title-display" class="editable-title" contenteditable="true" data-placeholder="Curated Photo Gallery">Curated Photo Gallery</h1>
+    </div>
+
+    <div id="admin-panel" class="admin-panel">
+        <h3>Admin Controls</h3>
+        <div class="admin-controls">
+            <div id="drop-zone" class="drop-zone">
+                <div class="drop-zone-content">
+                    <div class="drop-icon">📁</div>
+                    <div class="drop-text">Drag & drop images here or</div>
+                    <div id="compression-status" class="compression-status hidden"></div>
+                    <input type="file" id="image-input" accept="image/*" multiple>
+                    <button onclick="addImages()" class="choose-files-btn">Choose Files</button>
+                </div>
+            </div>
+            <button onclick="downloadAllFiles()" class="download-btn">Download Images & Data</button>
+        </div>
+    </div>
+
+    <div id="lightgallery" class="gallery">
+        <!-- Gallery items will be inserted here -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/lightgallery.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/plugins/zoom/lg-zoom.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/plugins/thumbnail/lg-thumbnail.umd.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
