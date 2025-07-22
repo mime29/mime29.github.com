@@ -93,6 +93,7 @@ function setupInlineTitleEditing() {
     
     // Only enable editing if running locally
     if (isLocal) {
+        titleElement.contentEditable = true;
         titleElement.addEventListener('blur', async function() {
             const newTitle = this.textContent.trim();
             if (newTitle && newTitle !== galleryData.title) {
@@ -341,7 +342,7 @@ async function loadStaticGalleryData() {
                 galleryData.images = await Promise.all(
                     staticData.images.map(async (imgData) => {
                         try {
-                            // Try to load the image file
+                            // Try to load the image file using the processed filename
                             const imagePath = `./images/${imgData.filename}`;
                             const imgResponse = await fetch(imagePath);
                             
@@ -464,7 +465,7 @@ function renderGallery() {
             <a href="${image.src}" data-lg-size="1600-1067">
                 <img src="${image.src}" alt="${image.title}">
                 ${adminControls}
-                <div class="image-title" contenteditable="true">${image.title}</div>
+                <div class="image-title" contenteditable="${isLocal}">${image.title}</div>
                 <div class="image-size">${sizeKB}KB</div>
             </a>
         `;
