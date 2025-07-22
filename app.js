@@ -27,11 +27,16 @@ async function checkServerAPI() {
 // Initialize the app
 document.addEventListener('DOMContentLoaded', async function() {
     // Setup basic functionality first
-    setupDragAndDrop();
+    if (isLocal) {
+        setupDragAndDrop();
+    }
     
     // Check server API availability first
     if (isLocal) {
         await checkServerAPI();
+    } else {
+        // On GitHub Pages, load static gallery data
+        await loadStaticGalleryData();
     }
     
     // If no server API or no data loaded, fall back to localStorage
@@ -86,27 +91,36 @@ function setupInlineTitleEditing() {
     
     const titleElement = document.getElementById('page-title-display');
     
-    titleElement.addEventListener('blur', async function() {
-        const newTitle = this.textContent.trim();
-        if (newTitle && newTitle !== galleryData.title) {
-            console.log(`🏷️ Title changed from "${galleryData.title}" to "${newTitle}"`);
-            galleryData.title = newTitle;
-            document.getElementById('page-title').textContent = newTitle;
-            saveDataWithErrorHandling();
-            await saveDataFile();
-            console.log('✅ Title saved successfully');
-        }
-    });
-    
-    titleElement.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            this.blur();
-        }
-    });
+    // Only enable editing if running locally
+    if (isLocal) {
+        titleElement.addEventListener('blur', async function() {
+            const newTitle = this.textContent.trim();
+            if (newTitle && newTitle !== galleryData.title) {
+                console.log(`🏷️ Title changed from "${galleryData.title}" to "${newTitle}"`);
+                galleryData.title = newTitle;
+                document.getElementById('page-title').textContent = newTitle;
+                saveDataWithErrorHandling();
+                await saveDataFile();
+                console.log('✅ Title saved successfully');
+            }
+        });
+        
+        titleElement.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.blur();
+            }
+        });
+        
+        console.log('🎯 Title editing setup complete');
+    } else {
+        // Disable editing on GitHub Pages
+        titleElement.contentEditable = false;
+        titleElement.style.cursor = 'default';
+        console.log('🔒 Title editing disabled (GitHub Pages)');
+    }
     
     titleEditingSetup = true;
-    console.log('🎯 Title editing setup complete');
 }
 
 // Add images to gallery
@@ -307,6 +321,78 @@ async function loadLocalImages() {
     }
 }
 
+// Load static gallery data from GitHub Pages
+async function loadStaticGalleryData() {
+    try {
+        console.log('📄 Loading static gallery data from GitHub Pages...');
+        
+        const response = await fetch('./gallery-data.json');
+        if (response.ok) {
+            const staticData = await response.json();
+            console.log('📄 Static data loaded:', staticData);
+            
+            if (staticData.title) {
+                galleryData.title = staticData.title;
+            }
+            
+            if (staticData.images && staticData.images.length > 0) {
+                // For GitHub Pages, we need to load images from the images/ directory
+                // Since we can't list directory contents, we'll work with the data file
+                galleryData.images = await Promise.all(
+                    staticData.images.map(async (imgData) => {
+                        try {
+                            // Try to load the image file
+                            const imagePath = `./images/${imgData.filename}`;
+                            const imgResponse = await fetch(imagePath);
+                            
+                            if (imgResponse.ok) {
+                                const blob = await imgResponse.blob();
+                                const dataUrl = await blobToDataURL(blob);
+                                
+                                return {
+                                    id: imgData.id,
+                                    src: dataUrl,
+                                    title: imgData.title,
+                                    filename: imgData.originalFilename || imgData.filename
+                                };
+                            } else {
+                                console.warn(`⚠️ Could not load image: ${imagePath}`);
+                                return null;
+                            }
+                        } catch (error) {
+                            console.warn(`⚠️ Error loading image ${imgData.filename}:`, error);
+                            return null;
+                        }
+                    })
+                );
+                
+                // Filter out failed image loads
+                galleryData.images = galleryData.images.filter(img => img !== null);
+            }
+            
+            // Update UI
+            document.getElementById('page-title').textContent = galleryData.title;
+            document.getElementById('page-title-display').textContent = galleryData.title;
+            
+            console.log(`✅ Loaded ${galleryData.images.length} images from static files`);
+        } else {
+            console.log('📂 No gallery-data.json found, using default data');
+        }
+    } catch (error) {
+        console.log('❌ Error loading static gallery data:', error);
+    }
+}
+
+// Helper function to convert blob to data URL
+function blobToDataURL(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+
 // Remove image from gallery
 function removeImage(imageId) {
     if (confirm('Are you sure you want to remove this image?')) {
@@ -318,29 +404,39 @@ function removeImage(imageId) {
 
 // Setup inline image title editing
 function setupImageTitleEditing(titleElement, imageId) {
-    titleElement.addEventListener('blur', async function() {
-        const newTitle = this.textContent.trim();
-        const image = galleryData.images.find(img => img.id === imageId);
-        if (image && newTitle && newTitle !== image.title) {
-            console.log(`🖼️ Image title changed from "${image.title}" to "${newTitle}"`);
-            image.title = newTitle;
-            saveDataWithErrorHandling();
-            await saveDataFile();
-        }
-    });
-    
-    titleElement.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            this.blur();
-        }
-        // Prevent event bubbling to avoid interfering with drag & drop
-        e.stopPropagation();
-    });
-    
-    titleElement.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
+    // Only enable editing if running locally
+    if (isLocal) {
+        titleElement.addEventListener('blur', async function() {
+            const newTitle = this.textContent.trim();
+            const image = galleryData.images.find(img => img.id === imageId);
+            if (image && newTitle && newTitle !== image.title) {
+                console.log(`🖼️ Image title changed from "${image.title}" to "${newTitle}"`);
+                image.title = newTitle;
+                saveDataWithErrorHandling();
+                await saveDataFile();
+            }
+        });
+        
+        titleElement.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.blur();
+            }
+            // Prevent event bubbling to avoid interfering with drag & drop
+            e.stopPropagation();
+        });
+        
+        titleElement.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    } else {
+        // Disable editing on GitHub Pages
+        titleElement.contentEditable = false;
+        titleElement.style.cursor = 'default';
+        titleElement.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
 }
 
 // Render gallery
@@ -377,8 +473,13 @@ function renderGallery() {
         const titleElement = item.querySelector('.image-title');
         setupImageTitleEditing(titleElement, image.id);
         
-        // Setup drag and drop
-        setupImageDragAndDrop(item);
+        // Setup drag and drop (only locally)
+        if (isLocal) {
+            setupImageDragAndDrop(item);
+        } else {
+            // Disable dragging on GitHub Pages
+            item.draggable = false;
+        }
         
         gallery.appendChild(item);
     });
