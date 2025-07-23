@@ -433,12 +433,15 @@ function renderGallery() {
             </div>
         ` : '';
         
+        // Only show size if it's greater than 0
+        const sizeDisplay = sizeKB > 0 ? `<div class="image-size">${sizeKB}KB</div>` : '';
+        
         item.innerHTML = `
             <a href="${image.src}" data-lg-size="1600-1067">
                 <img src="${image.src}" alt="${image.title}">
                 ${adminControls}
                 <div class="image-title" contenteditable="${isLocal}">${image.title}</div>
-                <div class="image-size">${sizeKB}KB</div>
+                ${sizeDisplay}
             </a>
         `;
         
