@@ -352,6 +352,8 @@ async function loadStaticGalleryData() {
             // Update UI
             document.getElementById('page-title').textContent = galleryData.title;
             document.getElementById('page-title-display').textContent = galleryData.title;
+            // Update browser tab title
+            document.title = galleryData.title;
             
             // Render the gallery
             renderGallery();
