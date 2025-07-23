@@ -331,9 +331,12 @@ async function loadStaticGalleryData() {
         if (response.ok) {
             const staticData = await response.json();
             console.log('📄 Static data loaded:', staticData);
+            console.log('📄 Raw title from JSON:', staticData.title);
+            console.log('📄 Title character codes:', Array.from(staticData.title).map(c => c.charCodeAt(0)));
             
             if (staticData.title) {
                 galleryData.title = staticData.title;
+                console.log('📄 Gallery title set to:', galleryData.title);
             }
             
             if (staticData.images && staticData.images.length > 0) {
@@ -350,10 +353,12 @@ async function loadStaticGalleryData() {
             }
             
             // Update UI
+            console.log('📄 Setting page title to:', galleryData.title);
             document.getElementById('page-title').textContent = galleryData.title;
             document.getElementById('page-title-display').textContent = galleryData.title;
             // Update browser tab title
             document.title = galleryData.title;
+            console.log('📄 Final document title:', document.title);
             
             // Render the gallery
             renderGallery();
