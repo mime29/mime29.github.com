@@ -451,8 +451,10 @@ function renderGallery() {
         item.innerHTML = `
             <img src="${imageSrc}" alt="${image.title}">
             ${adminControls}
-            <div class="image-title" contenteditable="${isLocal}">${image.title}</div>
-            ${sizeDisplay}
+            <div class="image-info">
+                <div class="image-title" contenteditable="${isLocal}">${image.title}</div>
+                ${sizeDisplay}
+            </div>
         `;
         
         // Setup inline editing for this image title

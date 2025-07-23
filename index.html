@@ -52,12 +52,14 @@
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
+            gap: 15px 15px;
+            row-gap: 60px;
+            margin-bottom: 60px;
         }
         .gallery li {
             position: relative;
             aspect-ratio: 1;
-            overflow: hidden;
+            overflow: visible;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: transform 0.2s;
@@ -71,6 +73,7 @@
             height: 100%;
             object-fit: cover;
             cursor: pointer;
+            border-radius: 8px;
         }
         .image-controls {
             position: absolute;
@@ -90,36 +93,43 @@
             cursor: pointer;
             font-size: 12px;
         }
-        .image-title {
+        .image-info {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 20px 10px 30px;
-            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 12px;
             text-align: center;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            min-width: 100px;
+            max-width: 180px;
+        }
+        .image-title {
             cursor: text;
             outline: none;
             border: none;
-            border-radius: 0 0 8px 8px;
+            background: transparent;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 2px;
             transition: all 0.2s ease;
         }
         .image-title:hover {
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #ddd;
         }
         .image-title:focus {
-            background: linear-gradient(transparent, rgba(0,123,255,0.8));
+            color: #007bff;
         }
         .image-size {
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-            right: 0;
-            color: rgba(255,255,255,0.8);
-            font-size: 11px;
-            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 10px;
+            margin-top: 2px;
         }
         .gallery li.dragging {
             opacity: 0.5;
