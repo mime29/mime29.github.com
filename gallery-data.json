@@ -1,24 +1,30 @@
 {
-  "title": "My Curated Gallery is 1M$",
-  "created": "2025-07-22T04:09:35.083Z",
+  "title": "Curated\u00ae",
+  "created": "2025-07-23T12:55:31.717Z",
   "images": [
     {
       "id": 1753156700686.5273,
       "filename": "image_1753156700686.5273_DSCF1868.JPG",
-      "title": "DoOoor to heaven",
+      "title": "Entering the light",
       "originalFilename": "DSCF1868.JPG"
     },
     {
       "id": 1753156700832.7834,
       "filename": "image_1753156700832.7834_DSCF1738.jpg",
-      "title": "Trees ttt",
+      "title": "Sleeping under a tree",
       "originalFilename": "DSCF1738.jpg"
     },
     {
       "id": 1753157355728.284,
       "filename": "image_1753157355728.284_DSCF1759.jpg",
-      "title": "Neon Red",
+      "title": "THE Neon Red",
       "originalFilename": "DSCF1759.jpg"
+    },
+    {
+      "id": 1753275292799.1682,
+      "filename": "image_1753275292799.1682_DSCF1760.jpg",
+      "title": "Neon and syle",
+      "originalFilename": "DSCF1760.jpg"
     }
   ]
 }

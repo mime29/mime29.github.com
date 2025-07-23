@@ -284,11 +284,11 @@ async function loadLocalImages() {
                         }
                         return {
                             id: imgData.id,
-                            src: serverImage ? serverImage.src : '',
+                            src: serverImage ? serverImage.src : `/images/${imgData.filename}`,
                             title: imgData.title,
                             filename: imgData.originalFilename || imgData.filename
                         };
-                    }).filter(img => img.src); // Only include images that were found on server
+                    }).filter(img => img.src && img.src !== '');
                 } else {
                     console.log('📂 No data file found, loading all images from directory...');
                     // No data file, just load all images found in directory
@@ -418,8 +418,7 @@ function renderGallery() {
     gallery.innerHTML = '';
     
     galleryData.images.forEach((image, index) => {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
+        const item = document.createElement('li');
         item.draggable = true;
         item.dataset.imageId = image.id;
         item.dataset.index = index;
@@ -436,13 +435,22 @@ function renderGallery() {
         // Only show size if it's greater than 0
         const sizeDisplay = sizeKB > 0 ? `<div class="image-size">${sizeKB}KB</div>` : '';
         
+        const imageSrc = image.src || '';
+        
+        // Skip images with no src
+        if (!imageSrc) {
+            return;
+        }
+        
+        // Set data-src for lightGallery
+        item.setAttribute('data-src', imageSrc);
+        item.setAttribute('data-lg-size', '1600-1067');
+        
         item.innerHTML = `
-            <a href="${image.src}" data-lg-size="1600-1067">
-                <img src="${image.src}" alt="${image.title}">
-                ${adminControls}
-                <div class="image-title" contenteditable="${isLocal}">${image.title}</div>
-                ${sizeDisplay}
-            </a>
+            <img src="${imageSrc}" alt="${image.title}">
+            ${adminControls}
+            <div class="image-title" contenteditable="${isLocal}">${image.title}</div>
+            ${sizeDisplay}
         `;
         
         // Setup inline editing for this image title
@@ -481,7 +489,7 @@ function setupImageDragAndDrop(item) {
     item.addEventListener('dragend', function(e) {
         this.classList.remove('dragging');
         // Remove all drag-over classes
-        document.querySelectorAll('.gallery-item').forEach(el => {
+        document.querySelectorAll('#lightgallery li').forEach(el => {
             el.classList.remove('drag-over');
         });
     });
