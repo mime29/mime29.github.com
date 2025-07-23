@@ -353,6 +353,9 @@ async function loadStaticGalleryData() {
             document.getElementById('page-title').textContent = galleryData.title;
             document.getElementById('page-title-display').textContent = galleryData.title;
             
+            // Render the gallery
+            renderGallery();
+            
             console.log(`✅ Loaded ${galleryData.images.length} images from static files`);
         } else {
             console.log('📂 No gallery-data.json found, using default data');
