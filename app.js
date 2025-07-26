@@ -369,11 +369,57 @@ async function loadStaticGalleryData() {
 
 
 // Remove image from gallery
-function removeImage(imageId) {
+async function removeImage(imageId) {
+    console.log('🗑️ removeImage called with imageId:', imageId);
+    console.log('📊 Current images count:', galleryData.images.length);
+    
     if (confirm('Are you sure you want to remove this image?')) {
+        console.log('✅ User confirmed removal');
+        const initialCount = galleryData.images.length;
+        
+        // Find the image to get its filename
+        const imageToRemove = galleryData.images.find(img => img.id === imageId);
+        if (imageToRemove) {
+            console.log('🗑️ Removing image:', imageToRemove.filename);
+            
+            // Delete the actual image file from server
+            if (hasServerAPI) {
+                try {
+                    // Construct the server filename format: image_{id}_{originalfilename}
+                    const serverFilename = `image_${imageToRemove.id}_${imageToRemove.filename}`;
+                    console.log('🗑️ Server filename to delete:', serverFilename);
+                    
+                    const deleteResponse = await fetch(`/api/delete-image/${encodeURIComponent(serverFilename)}`, {
+                        method: 'DELETE'
+                    });
+                    if (deleteResponse.ok) {
+                        console.log('🗑️ Image file deleted from server successfully');
+                    } else {
+                        console.error('❌ Failed to delete image file from server:', await deleteResponse.text());
+                    }
+                } catch (error) {
+                    console.error('❌ Error deleting image file from server:', error);
+                }
+            }
+        }
+        
         galleryData.images = galleryData.images.filter(img => img.id !== imageId);
+        console.log('📊 Images after filter:', galleryData.images.length, 'removed:', initialCount - galleryData.images.length);
+        
         saveData();
+        console.log('💾 saveData() completed');
+        
+        try {
+            await saveDataFile();
+            console.log('📄 saveDataFile() completed successfully');
+        } catch (error) {
+            console.error('❌ saveDataFile() failed:', error);
+        }
+        
         renderGallery();
+        console.log('🎨 renderGallery() completed');
+    } else {
+        console.log('❌ User cancelled removal');
     }
 }
 
@@ -529,21 +575,38 @@ function setupImageDragAndDrop(item) {
 
 // Reorder images in the gallery
 async function reorderImages(draggedId, targetId) {
-    const draggedIndex = galleryData.images.findIndex(img => img.id === draggedId);
-    const targetIndex = galleryData.images.findIndex(img => img.id === targetId);
+    console.log('🔄 reorderImages called:', { draggedId, targetId, types: { draggedId: typeof draggedId, targetId: typeof targetId } });
+    console.log('📊 Current gallery IDs:', galleryData.images.map(img => ({ id: img.id, type: typeof img.id, title: img.title })));
     
-    if (draggedIndex === -1 || targetIndex === -1) return;
+    // Convert IDs to numbers for comparison since data might be strings
+    const numDraggedId = Number(draggedId);
+    const numTargetId = Number(targetId);
+    
+    const draggedIndex = galleryData.images.findIndex(img => Number(img.id) === numDraggedId);
+    const targetIndex = galleryData.images.findIndex(img => Number(img.id) === numTargetId);
+    
+    console.log('🔍 Found indices:', { draggedIndex, targetIndex });
+    
+    if (draggedIndex === -1 || targetIndex === -1) {
+        console.error('❌ Could not find image indices for reordering');
+        return;
+    }
+    
+    if (draggedIndex === targetIndex) {
+        console.log('ℹ️ Same position, no reordering needed');
+        return;
+    }
     
     // Remove dragged image and insert at target position
     const draggedImage = galleryData.images.splice(draggedIndex, 1)[0];
     galleryData.images.splice(targetIndex, 0, draggedImage);
     
+    console.log(`📷 Moved image "${draggedImage.title}" from position ${draggedIndex + 1} to position ${targetIndex + 1}`);
+    
     // Save and re-render
     saveDataWithErrorHandling();
     await saveDataFile();
     renderGallery();
-    
-    console.log(`📷 Moved image "${draggedImage.title}" to position ${targetIndex + 1}`);
 }
 
 // Initialize lightGallery
