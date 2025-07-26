@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Setup basic functionality first
     if (isLocal) {
         setupDragAndDrop();
+    } else {
+        // Hide admin panel and clear title on GitHub Pages
+        document.getElementById('admin-panel').classList.add('hidden');
+        document.getElementById('page-title-display').textContent = '';
     }
     
     // Check server API availability first
@@ -48,13 +52,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     setupInlineTitleEditing();
     
     initializeGallery();
-    
-    // Hide admin panel if on GitHub Pages
-    if (!isLocal) {
-        document.getElementById('admin-panel').classList.add('hidden');
-        // Clear title on GitHub Pages until data loads
-        document.getElementById('page-title-display').textContent = '';
-    }
 });
 
 // Load data from localStorage or default
