@@ -49,10 +49,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     initializeGallery();
     
-    // Hide admin panel if on GitHub Pages
-    if (!isLocal) {
-        document.getElementById('admin-panel').classList.add('hidden');
-    }
+    // Hide loading and show content
+    showContent();
 });
 
 // Load data from localStorage or default
@@ -81,6 +79,43 @@ function saveDataWithErrorHandling() {
         localStorage.setItem('curatedGallery', JSON.stringify(galleryData));
     } catch (error) {
         console.error('Error saving data:', error);
+    }
+}
+
+// Show content and hide loading indicator
+function showContent() {
+    console.log('📱 Showing content, hiding loading indicator');
+    
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const pageTitle = document.getElementById('page-title-display');
+    const adminPanel = document.getElementById('admin-panel');
+    
+    // Start fade-out animation for loading indicator
+    if (loadingIndicator) {
+        loadingIndicator.classList.add('fade-out');
+        
+        // After animation completes, hide loading and show content
+        setTimeout(() => {
+            loadingIndicator.classList.add('hidden');
+            
+            // Show title
+            if (pageTitle) {
+                pageTitle.classList.remove('hidden');
+            }
+            
+            // Show admin panel only if local
+            if (adminPanel && isLocal) {
+                adminPanel.classList.remove('hidden');
+            }
+        }, 500); // Match the CSS transition duration
+    } else {
+        // Fallback if loading indicator not found
+        if (pageTitle) {
+            pageTitle.classList.remove('hidden');
+        }
+        if (adminPanel && isLocal) {
+            adminPanel.classList.remove('hidden');
+        }
     }
 }
 
