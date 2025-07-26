@@ -260,35 +260,6 @@
             border-radius: 4px;
             border: 1px solid #ddd;
         }
-        .loading-indicator {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-            padding: 40px 20px;
-        }
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #007bff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .loading-text {
-            color: #666;
-            font-size: 16px;
-        }
-        .fade-out {
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-        }
         .hidden {
             display: none !important;
         }
@@ -296,15 +267,10 @@
 </head>
 <body>
     <div class="header">
-        <h1 id="page-title-display" class="editable-title hidden" contenteditable="false" data-placeholder="Curated Photo Gallery">Curated Photo Gallery</h1>
+        <h1 id="page-title-display" class="editable-title" contenteditable="false" data-placeholder="Curated Photo Gallery">Curated Photo Gallery</h1>
     </div>
 
-    <div id="loading-indicator" class="loading-indicator">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Loading gallery...</div>
-    </div>
-
-    <div id="admin-panel" class="admin-panel hidden">
+    <div id="admin-panel" class="admin-panel">
         <h3>Admin Controls</h3>
         <div class="admin-controls">
             <div id="drop-zone" class="drop-zone">
